@@ -7,14 +7,14 @@
  - 2025-08-29: LimiX V1.0 发布
 # ⚡ 最新评测
 <div align="center">
-  <img src="./doc/BCCO-CLS.png"  width="33%" margin-right=5px>
-  <img src="./doc/TabArena-CLS.png"  width="33%" margin-right=5px>
-  <img src="./doc/TabZilla-CLS.png" width="33%" margin-right=5px>
+  <img src="./doc/BCCO-CLS.png"  width="33%">
+  <img src="./doc/TabArena-CLS.png"  width="33%">
+  <img src="./doc/TabZilla-CLS.png" width="33%">
 </div>
 <div align="center">
-  <img src="./doc/BCCO-REG.png"  width="33%" margin-right=5px>
-  <img src="./doc/TabArena-REG.png" width="33%" margin-right=5px>
-  <img src="./doc/CTR23-REG.png" width="33%" margin-right=5px>
+  <img src="./doc/BCCO-REG.png"  width="33%">
+  <img src="./doc/TabArena-REG.png" width="33%">
+  <img src="./doc/CTR23-REG.png" width="33%">
 </div>
 
 # ➤ 简介
