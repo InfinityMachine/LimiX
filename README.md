@@ -2,9 +2,22 @@
   <img src="./doc/LimiX-Logo.png" alt="LimiX summary" width="89%">
 </div>
 
-# News :boom: 
- - 2025-08-29: LimiX V1.0 Released.
+#  :boom: News
  - 2025-11-10: LimiX-2M is officially released! Compared to LimiX-16M, this smaller variant offers significantly lower GPU memory usage and faster inference speed. The retrieval mechanism has also been enhanced, further improving model performance while reducing both inference time and memory consumption.
+ - 2025-08-29: LimiX V1.0 Released.
+
+#  ⚡ Latest Results Compared with SOTA Models
+<div align="center">
+  <img src="./doc/BCCO-CLS.png"  width="33%" margin-right=5px>
+  <img src="./doc/TabArena-CLS.png"  width="33%" margin-right=5px>
+  <img src="./doc/TabZilla-CLS.png" width="33%" margin-right=5px>
+</div>
+<div align="center">
+  <img src="./doc/BCCO-REG.png"  width="33%" margin-right=5px>
+  <img src="./doc/TabArena-REG.png" width="33%" margin-right=5px>
+  <img src="./doc/CTR23-REG.png" width="33%" margin-right=5px>
+</div>
+
 
 # ➤ Overview
 <div align="center">
@@ -19,17 +32,17 @@ For details, please refer to the technical report at the link: [LimiX:Unleashing
 # ➤ Superior Performance 
 The LimiX model achieved SOTA performance across multiple tasks.
 
-## ➩ Classification
+## ➩ Classification (Tech Report)
 <div align="center">
   <img src="doc/Classifier.png" alt="Classification" width="80%">
 </div>
 
-## ➩ Regression
+## ➩ Regression (Tech Report)
 <div align="center">
   <img src="doc/Regression.png" alt="Regression" width="60%">
 </div>
 
-## ➩ Missing Values Imputation
+## ➩ Missing Values Imputation (Tech Report)
 <div align="center">
   <img src="doc/MissingValueImputation.png" alt="Missing value imputation" width="80%">
 </div>

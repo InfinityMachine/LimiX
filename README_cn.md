@@ -2,9 +2,20 @@
   <img src="./doc/LimiX-Logo.png" alt="LimiX summary" width="89%">
 </div>
 
-# 最新进展 :boom: 
- - 2025-08-29: LimiX V1.0 发布
+#  :boom:  最新进展
  - 2025-11-10: LimiX-2M 正式发布！与 LimiX-16M 相比，此版本在显著降低 GPU 内存占用的同时，实现了更快的推理速度。在此基础上，LimiX 的样本检索机制也得到了优化，模型的性能进一步提升，并有效减少了该模式下的推理时间与显存消耗
+ - 2025-08-29: LimiX V1.0 发布
+# ⚡ 最新评测
+<div align="center">
+  <img src="./doc/BCCO-CLS.png"  width="33%" margin-right=5px>
+  <img src="./doc/TabArena-CLS.png"  width="33%" margin-right=5px>
+  <img src="./doc/TabZilla-CLS.png" width="33%" margin-right=5px>
+</div>
+<div align="center">
+  <img src="./doc/BCCO-REG.png"  width="33%" margin-right=5px>
+  <img src="./doc/TabArena-REG.png" width="33%" margin-right=5px>
+  <img src="./doc/CTR23-REG.png" width="33%" margin-right=5px>
+</div>
 
 # ➤ 简介
 <div align="center">
@@ -18,17 +29,17 @@
 
 # ➤ 对比测试
 LimiX模型在多个任务的测试中达到了当前最优性能.
-## ➩ 分类测试
+## ➩ 分类
 <div align="center">
   <img src="doc/Classifier.png" alt="Classification" width="80%">
 </div>
 
-## ➩ 回归对比测试
+## ➩ 回归
 <div align="center">
   <img src="doc/Regression.png" alt="Regression" width="60%">
 </div>
 
-## ➩ 缺失值插补对比测试
+## ➩ 缺失值插补
 <div align="center">
   <img src="doc/MissingValueImputation.png" alt="Missing value imputation" width="80%">
 </div>
@@ -257,7 +268,6 @@ print(f'R2: {r2}')
 # ➤ 链接
  - LimiX(极数)：结构化数据通用大模型：[LimiX:Unleashing Structured-Data Modeling Capability for Generalist Intelligence](https://arxiv.org/abs/2509.03505)
  - LimiX技术报告：[LimiX_Technical_Report.pdf](https://github.com/limix-ldm/LimiX/blob/main/LimiX_Technical_Report.pdf)
- - Limix 详细使用说明：[访问 Limix 官方文档](https://www.limix.ai/doc/)
  - 平衡、全面、有挑战、跨领域的分类数据集：[bcco_cls](https://huggingface.co/datasets/stableai-org/bcco_cls)
  - 平衡、全面、有挑战、跨领域的回归数据集：[bcco_reg](https://huggingface.co/datasets/stableai-org/bcco_reg)
 
