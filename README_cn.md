@@ -31,12 +31,21 @@
 LimiX模型在多个任务的测试中达到了当前最优性能.
 ## ➩ 分类
 <div align="center">
-  <img src="doc/Classifier.png" alt="Classification" width="80%">
+  <img src="doc/classification_tabarena_lite.png" width="60%">
+</div>
+
+<div align="center">
+  <img src="doc/Classifier.png" width="45%" style="margin-right:2%;">
+  <img src="doc/TabArena_lite_CLS.png" width="42.5%">
 </div>
 
 ## ➩ 回归
 <div align="center">
-  <img src="doc/Regression.png" alt="Regression" width="60%">
+  <img src="doc/regression_tabarena_lite.png" width="60%">
+</div>
+<div align="center">
+  <img src="doc/Regression.png" width="45%" style="margin-right:2%;">
+  <img src="doc/TabArena_REG.png" width="40.3%">
 </div>
 
 ## ➩ 缺失值插补

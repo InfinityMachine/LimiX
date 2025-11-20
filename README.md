@@ -32,7 +32,7 @@ For details, please refer to the technical report at the link: [LimiX:Unleashing
 # ➤ Superior Performance 
 The LimiX model achieved SOTA performance across multiple tasks.
 
-## ➩ Classification (Tech Report)
+## ➩ Classification 
 <div align="center">
   <img src="doc/classification_tabarena_lite.png" width="60%">
 </div>
@@ -42,7 +42,7 @@ The LimiX model achieved SOTA performance across multiple tasks.
   <img src="doc/TabArena_lite_CLS.png" width="42.5%">
 </div>
 
-## ➩ Regression (Tech Report)
+## ➩ Regression 
 <div align="center">
   <img src="doc/regression_tabarena_lite.png" width="60%">
 </div>
@@ -51,7 +51,7 @@ The LimiX model achieved SOTA performance across multiple tasks.
   <img src="doc/TabArena_REG.png" width="40.3%">
 </div>
 
-## ➩ Missing Values Imputation (Tech Report)
+## ➩ Missing Values Imputation 
 <div align="center">
   <img src="doc/MissingValueImputation.png" alt="Missing value imputation" width="60%">
 </div>
