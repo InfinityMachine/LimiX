@@ -79,7 +79,7 @@ LimiX支持分类、回归、缺失值插补等任务。
 | 模型尺寸 | 下载链接 | 支持的任务 |
 | --- | --- | --- |
 |  LimiX-16M | [LimiX-16M.ckpt](https://huggingface.co/stableai-org/LimiX-16M/tree/main) |  ✅ 分类  ✅回归   ✅缺失值插补 |
-|  LimiX-2M | [LimiX-2M.ckpt](https://huggingface.co/stableai-org/LimiX-2M/tree/main) |  ✅ 分类  ✅回归   ✅缺失值插补 |
+|  LimiX-2M | [LimiX-2M.ckpt](https://huggingface.co/stableai-org/LimiX-2M/tree/main) |  ✅ 分类  ✅回归 |
 
 
 ## ➩ 接口说明

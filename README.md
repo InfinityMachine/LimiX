@@ -88,7 +88,7 @@ LimiX supports tasks such as classification, regression, and missing value imput
 | Model size | Download link | Tasks supported |
 | --- | --- | --- |
 | LimiX-16M | [LimiX-16M.ckpt](https://huggingface.co/stableai-org/LimiX-16M/tree/main) |  ✅ classification  ✅regression   ✅missing value imputation |
-| LimiX-2M | [LimiX-2M.ckpt](https://huggingface.co/stableai-org/LimiX-2M/tree/main) |  ✅ classification  ✅regression   ✅missing value imputation |
+| LimiX-2M | [LimiX-2M.ckpt](https://huggingface.co/stableai-org/LimiX-2M/tree/main) |  ✅ classification  ✅regression |
 
 ## ➩ Interface description
 
