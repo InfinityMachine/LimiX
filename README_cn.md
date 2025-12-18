@@ -213,7 +213,7 @@ X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.5, random_
 
 model_file = hf_hub_download(repo_id="stableai-org/LimiX-16M", filename="LimiX-16M.ckpt", local_dir="./cache")
 
-clf = LimiXPredictor(device='cuda', model_path=model_file, inference_config='config/cls_default_retrieval.json')
+clf = LimiXPredictor(device=torch.device('cuda'), model_path=model_file, inference_config='config/cls_default_retrieval.json')
 prediction = clf.predict(X_train, y_train, X_test)
 
 print("roc_auc_score:", roc_auc_score(y_test, prediction[:, 1]))
@@ -255,10 +255,9 @@ y_std = y_train.std()
 y_train_normalized = (y_train - y_mean) / y_std
 y_test_normalized = (y_test - y_mean) / y_std
 
-data_device = f'cuda:0'
 model_path = hf_hub_download(repo_id="stableai-org/LimiX-16M", filename="LimiX-16M.ckpt", local_dir="./cache")
 
-model = LimiXPredictor(device='cuda', model_path=model_path, inference_config='config/reg_default_retrieval.json')
+model = LimiXPredictor(device=torch.device('cuda'), model_path=model_path, inference_config='config/reg_default_retrieval.json')
 y_pred = model.predict(X_train, y_train_normalized, X_test)    
 
 # Compute RMSE and R²
