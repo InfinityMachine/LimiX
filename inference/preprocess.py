@@ -675,8 +675,11 @@ class SubSampleData():
             feature_attention_score: torch.Tensor = None,
             sample_attention_score: torch.Tensor = None,
             subsample_ratio: float | int = 200,
+            retrieval_config: dict | None = None,
             subsample_idx:list[int] | np.ndarray[int] = None,
             ):
+        retrieval_config = retrieval_config or {}
+        retrieval_method = retrieval_config.get("retrieval_method", "default")
         if isinstance(subsample_ratio, float):
             if self.subsample_type == "sample":
                 self.subsample_num = int(subsample_ratio * x.shape[0])
@@ -704,11 +707,23 @@ class SubSampleData():
             self.X_train = x
             self.y_train = y
         else:
-            y_feature_attention_score = torch.mean(feature_attention_score[:, -1, :].squeeze(),dim=0)  # shape [test_sample_lens,features]
-            if subsample_idx is None:
-                self.subsample_idx = torch.argsort(y_feature_attention_score)[-min(self.subsample_num, x.shape[0]):]
+            if retrieval_method == "taar":
+                from retrieval_extension.taar import TAARConfig, TaskAlignedAttentionRetrieval
+                config = TAARConfig.from_retrieval_config(retrieval_config)
+                if subsample_idx is None:
+                    self.subsample_idx = TaskAlignedAttentionRetrieval.select_feature_indices(
+                        feature_attention=feature_attention_score,
+                        num_raw_features=x.shape[1],
+                        config=config,
+                    )
+                else:
+                    self.subsample_idx = subsample_idx
             else:
-                self.subsample_idx = subsample_idx
+                y_feature_attention_score = torch.mean(feature_attention_score[:, -1, :].squeeze(),dim=0)  # shape [test_sample_lens,features]
+                if subsample_idx is None:
+                    self.subsample_idx = torch.argsort(y_feature_attention_score)[-min(self.subsample_num, x.shape[0]):]
+                else:
+                    self.subsample_idx = subsample_idx
             self.X_train = x
 
     def transform(self, x: torch.Tensor=None) -> np.ndarray |torch.Tensor | TabularInferenceDataset:

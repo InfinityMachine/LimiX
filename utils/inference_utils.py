@@ -92,11 +92,19 @@ def generate_infenerce_config(args):
     retrieval_config = dict(
         use_retrieval=False,
         retrieval_before_preprocessing=False,
+        retrieval_method="default",
         calculate_feature_attention=False,
         calculate_sample_attention=False,
         subsample_ratio=1,
         subsample_type=None,
         use_type=None,
+        eta_feature_attn=0.8,
+        eta_sample_attn=0.8,
+        eta_cont=0.2,
+        feature_max_ratio=0.3,
+        min_features=1,
+        max_features=None,
+        max_samples=2000,
     )
 
     config_list = [
@@ -175,11 +183,19 @@ def sample_inferece_params(rng:np.random.Generator, sample_num:int=2, repeat_num
         "retrieval_config": {
             "use_retrieval": False,
             "retrieval_before_preprocessing": False,
+            "retrieval_method": "default",
             "calculate_feature_attention": False,
             "calculate_sample_attention": False,
             "subsample_ratio": 0.7,
             "subsample_type": "sample",
-            "use_type": "mixed"
+            "use_type": "mixed",
+            "eta_feature_attn": 0.8,
+            "eta_sample_attn": 0.8,
+            "eta_cont": 0.2,
+            "feature_max_ratio": 0.3,
+            "min_features": 1,
+            "max_features": None,
+            "max_samples": 2000,
         }
     }
     if rng.random() > 0.5:

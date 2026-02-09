@@ -332,10 +332,12 @@ class LimiXPredictor:
                                                                                      task_type="cls",device=self.device)
                    
                 elif isinstance(step, SubSampleData):
+                    retrieval_config = self.inference_config[id_pipe]["retrieval_config"]
                     step.fit(torch.from_numpy(x_[:len(y_train)]), torch.from_numpy(y_train),
                              feature_attention_score=feature_attention_score,
                              sample_attention_score=sample_attention_score,
-                             subsample_ratio=self.inference_config[id_pipe]["retrieval_config"].get("sub_feature_ratio", 0.5))
+                             subsample_ratio=retrieval_config.get("sub_feature_ratio", 0.5),
+                             retrieval_config=retrieval_config)
                     if self.inference_config[id_pipe]["retrieval_config"]["subsample_type"] == "feature":
                         x_ = step.transform(torch.from_numpy(x_[len(y_train):]).float())
                         categorical_idx_ = self.get_categorical_features_indices(x_)
@@ -370,7 +372,16 @@ class LimiXPredictor:
                                              threshold=self.inference_config[id_pipe]["retrieval_config"].get(
                                                  "threshold", 1),
                                              mixed_method=self.inference_config[id_pipe]["retrieval_config"].get(
-                                                 "mixed_method", "max"),device=self.device)
+                                                 "mixed_method", "max"),
+                                             retrieval_method=self.inference_config[id_pipe]["retrieval_config"].get(
+                                                 "retrieval_method", "default"),
+                                             eta_sample_attn=self.inference_config[id_pipe]["retrieval_config"].get(
+                                                 "eta_sample_attn", None),
+                                             eta_cont=self.inference_config[id_pipe]["retrieval_config"].get(
+                                                 "eta_cont", None),
+                                             taar_max_samples=self.inference_config[id_pipe]["retrieval_config"].get(
+                                                 "max_samples", None),
+                                             device=self.device)
                 if self.softmax_temperature != 1:
                     output = (output[:, :self.n_classes].float() / self.softmax_temperature)
 
@@ -536,10 +547,12 @@ class LimiXPredictor:
                                                                                      task_type="reg",device=self.device)
                     
                 elif isinstance(step, SubSampleData):
+                    retrieval_config = self.inference_config[id_pipe]["retrieval_config"]
                     step.fit(torch.from_numpy(x_[:len(y_train)]), torch.from_numpy(y_train),
                              feature_attention_score=feature_attention_score,
                              sample_attention_score=sample_attention_score,
-                             subsample_ratio=self.inference_config[id_pipe]["retrieval_config"].get("sub_feature_ratio", 0.5))
+                             subsample_ratio=retrieval_config.get("sub_feature_ratio", 0.5),
+                             retrieval_config=retrieval_config)
                     if self.inference_config[id_pipe]["retrieval_config"]["subsample_type"] == "feature":
                         x_ = step.transform(torch.from_numpy(x_[len(y_train):]).float())
                         categorical_idx_ = self.get_categorical_features_indices(x_)
@@ -573,7 +586,16 @@ class LimiXPredictor:
                                              threshold=self.inference_config[id_pipe]["retrieval_config"].get(
                                                  "threshold", 1),
                                              mixed_method=self.inference_config[id_pipe]["retrieval_config"].get(
-                                                 "mixed_method", "max"),device=self.device)
+                                                 "mixed_method", "max"),
+                                             retrieval_method=self.inference_config[id_pipe]["retrieval_config"].get(
+                                                 "retrieval_method", "default"),
+                                             eta_sample_attn=self.inference_config[id_pipe]["retrieval_config"].get(
+                                                 "eta_sample_attn", None),
+                                             eta_cont=self.inference_config[id_pipe]["retrieval_config"].get(
+                                                 "eta_cont", None),
+                                             taar_max_samples=self.inference_config[id_pipe]["retrieval_config"].get(
+                                                 "max_samples", None),
+                                             device=self.device)
                 outputs.append(output)
             elif self.inference_with_DDP:
                 inference = InferenceResultWithRetrieval(model=self.model,

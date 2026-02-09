@@ -126,10 +126,20 @@ def predict(self, x_train:np.ndarray, y_train:np.ndarray, x_test:np.ndarray) -> 
 | 配置文件名称 | 配置文件说明 | 差异 |
 | ------- | ---------- | ----- |
 | cls_default_retrieval.json | 默认的**含有retrieval**功能的**分类任务**推理配置文件 | 分类性能更好 |
+| cls_default_2M_taar.json | 默认的 **TAAR 检索** 分类配置（2M） | 特征注意力 + 样本注意力联合检索 |
 | cls_default_noretrieval.json | 默认的**不含有retrieval**功能的**分类任务**推理配置文件 | 速度更快、显存需求更低 |
 | reg_default_retrieval.json | 默认的**含有retrieval**功能的**回归任务**推理配置文件 | 回归性能更好 |
+| reg_default_2M_taar.json | 默认的 **TAAR 检索** 回归配置（2M） | 特征注意力 + 样本注意力联合检索 |
 | reg_default_noretrieval.json | 默认的**不含有retrieval**功能的**回归任务**推理配置文件 | 速度更快、显存需求更低 |
 | reg_default_noretrieval_MVI.json | 默认的**缺失值插补**任务推理配置文件 |  |
+
+### TAAR 模块关键参数（retrieval_config）
+- `retrieval_method`: 设为 `"taar"` 启用 TAAR。
+- `eta_feature_attn`: 特征累计注意力阈值（论文中的特征筛选阈值）。
+- `eta_sample_attn`: 样本累计注意力阈值（论文中的样本筛选阈值）。
+- `eta_cont`: 最小上下文比例阈值（最终 `k = max(k_attn, k_cont)`）。
+- `feature_max_ratio`: 特征筛选比例上限。
+- `max_samples`: 检索样本上限。
 
 ## ➩ 基于样本检索的ensemble推理
 基于样本检索的ensemble推理的详细技术描述详见[LimiX技术报告](https://github.com/limix-ldm/LimiX/blob/main/LimiX_Technical_Report.pdf)

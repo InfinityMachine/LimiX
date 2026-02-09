@@ -107,6 +107,10 @@ class InferenceResultWithRetrieval:
                   use_threshold: bool = False,
                   threshold: float = 0.5,
                   mixed_method: str = "max", device: int|torch.device = 0,
+                  retrieval_method: str = "default",
+                  eta_sample_attn: float | None = None,
+                  eta_cont: float | None = None,
+                  taar_max_samples: int | None = None,
                   **kwargs
                   ):
         if isinstance(device, int):
@@ -134,11 +138,30 @@ class InferenceResultWithRetrieval:
         else:
             self.retrieval_len = retrieval_len
 
+        if retrieval_method == "taar":
+            if eta_cont is not None:
+                self.retrieval_len = max(1, int(np.ceil(float(eta_cont) * X_train.shape[0])))
+            if taar_max_samples is not None:
+                self.retrieval_len = min(self.retrieval_len, int(taar_max_samples))
+            use_threshold = True
+            mixed_method = "max"
+            if eta_sample_attn is not None:
+                threshold = float(eta_sample_attn)
+
         if use_cluster:
             if cluster_num == "num_class":
                 cluster_num = len(torch.unique(y_train))
 
-            if use_threshold:
+            if retrieval_method == "taar":
+                from retrieval_extension.taar import TAARConfig, TaskAlignedAttentionRetrieval
+                sample_attention_tensor = attention_score if isinstance(attention_score, torch.Tensor) else torch.as_tensor(attention_score)
+                taar_config = TAARConfig(
+                    eta_sample_attn=threshold,
+                    eta_cont=float(self.retrieval_len / max(X_train.shape[0], 1)),
+                    max_samples=taar_max_samples,
+                )
+                top_k_indices = TaskAlignedAttentionRetrieval.select_sample_indices(sample_attention_tensor, taar_config)
+            elif use_threshold:
                 top_k_indices = find_top_K_indice(attention_score, threshold=threshold, mixed_method=mixed_method,
                                                   retrieval_len=self.retrieval_len)
             else:
@@ -190,7 +213,16 @@ class InferenceResultWithRetrieval:
             return outputs
         else:
             if dataset is None:
-                dataset = self._prepare_data(X_train, y_train, X_test, attention_score, self.retrieval_len)
+                dataset = self._prepare_data(
+                    X_train,
+                    y_train,
+                    X_test,
+                    attention_score,
+                    self.retrieval_len,
+                    use_threshold=use_threshold,
+                    mixed_method=mixed_method,
+                    threshold=threshold,
+                )
             self.rank, self.world_size = setup()
 
             model = self.model.cuda(self.rank)

@@ -135,10 +135,20 @@ def predict(self, x_train:np.ndarray, y_train:np.ndarray, x_test:np.ndarray) -> 
 | Configuration File Name | Description | Difference |
 | ------- | ---------- | ----- |
 | cls_default_retrieval.json | Default **classification task** inference configuration file **with retrieval** | Better classification performance |
+| cls_default_2M_taar.json | Default **TAAR retrieval** config for classification (2M) | Joint feature-attention and sample-attention retrieval |
 | cls_default_noretrieval.json | Default **classification task** inference configuration file **without retrieval** | Faster speed, lower memory requirements |
 | reg_default_retrieval.json | Default **regression task** inference configuration file **with retrieval** | Better regression performance |
+| reg_default_2M_taar.json | Default **TAAR retrieval** config for regression (2M) | Joint feature-attention and sample-attention retrieval |
 | reg_default_noretrieval.json | Default **regression task** inference configuration file **without retrieval** | Faster speed, lower memory requirements |
 | reg_default_noretrieval_MVI.json | Default inference configuration file for **missing value imputation task** |  |
+
+### TAAR Key Parameters (`retrieval_config`)
+- `retrieval_method`: Set to `"taar"` to enable TAAR.
+- `eta_feature_attn`: Cumulative feature-attention threshold.
+- `eta_sample_attn`: Cumulative sample-attention threshold.
+- `eta_cont`: Minimum context ratio threshold, with final `k = max(k_attn, k_cont)`.
+- `feature_max_ratio`: Upper bound of selected feature ratio.
+- `max_samples`: Upper bound of retrieved samples.
 
 ## ➩ Ensemble Inference Based on Sample Retrieval
 
