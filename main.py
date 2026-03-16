@@ -22,6 +22,7 @@ except ImportError:
     def root_mean_squared_error(y_true, y_pred):
         return mean_squared_error(y_true, y_pred, squared=False)
 
+
 from inference.predictor import LimiXPredictor
 
 
@@ -38,12 +39,34 @@ TARGET_COLUMN = "PM2.5"
 
 def parse_args() -> argparse.Namespace:
     """Provide a few practical overrides while keeping the default run simple."""
-    parser = argparse.ArgumentParser(description="Use LimiX to predict PM2.5 and export evaluation plots.")
-    parser.add_argument("--data-path", type=Path, default=DATA_PATH, help="CSV dataset path.")
-    parser.add_argument("--model-path", type=Path, default=MODEL_PATH, help="LimiX model checkpoint path.")
-    parser.add_argument("--output-dir", type=Path, default=OUTPUT_DIR, help="Directory for metrics, CSV and plots.")
+    parser = argparse.ArgumentParser(
+        description="Use LimiX to predict PM2.5 and export evaluation plots."
+    )
+    parser.add_argument(
+        "--data-path", type=Path, default=DATA_PATH, help="CSV dataset path."
+    )
+    parser.add_argument(
+        "--model-path",
+        type=Path,
+        default=MODEL_PATH,
+        help="LimiX model checkpoint path.",
+    )
+    parser.add_argument(
+        "--config-path",
+        type=Path,
+        default=None,
+        help="Optional inference config path. If omitted, a default config is selected based on the device.",
+    )
+    parser.add_argument(
+        "--output-dir",
+        type=Path,
+        default=OUTPUT_DIR,
+        help="Directory for metrics, CSV and plots.",
+    )
     parser.add_argument("--test-size", type=float, default=0.2, help="Test set ratio.")
-    parser.add_argument("--random-state", type=int, default=42, help="Random seed for train/test split.")
+    parser.add_argument(
+        "--random-state", type=int, default=42, help="Random seed for train/test split."
+    )
     return parser.parse_args()
 
 
@@ -78,7 +101,9 @@ def encode_categorical_columns(df: pd.DataFrame) -> pd.DataFrame:
     """Convert categorical columns to integer ids before feeding them to the model."""
     encoded_df = df.copy()
     for column in CATEGORICAL_COLUMNS:
-        encoded_df[column] = encoded_df[column].astype("category").cat.codes.astype(np.float32)
+        encoded_df[column] = (
+            encoded_df[column].astype("category").cat.codes.astype(np.float32)
+        )
     return encoded_df
 
 
@@ -100,15 +125,23 @@ def normalize_target(y_train: np.ndarray) -> tuple[np.ndarray, float, float]:
     return y_train_norm, y_mean, y_std
 
 
-def resolve_inference_config(device: torch.device) -> Path:
-    """Use the CPU-safe config when CUDA is unavailable."""
-    config_path = GPU_CONFIG_PATH if device.type == "cuda" else CPU_CONFIG_PATH
+def resolve_inference_config(
+    device: torch.device, custom_config_path: Path | None = None
+) -> Path:
+    """Use a user-specified config if provided, otherwise fall back to a device-safe default."""
+    config_path = (
+        custom_config_path
+        if custom_config_path is not None
+        else (GPU_CONFIG_PATH if device.type == "cuda" else CPU_CONFIG_PATH)
+    )
     if not config_path.exists():
         raise FileNotFoundError(f"Inference config does not exist: {config_path}")
     return config_path
 
 
-def create_predictor(device: torch.device, model_path: Path, config_path: Path) -> LimiXPredictor:
+def create_predictor(
+    device: torch.device, model_path: Path, config_path: Path
+) -> LimiXPredictor:
     """Create the LimiX predictor with the categorical column positions declared explicitly."""
     if not model_path.exists():
         raise FileNotFoundError(f"Model checkpoint does not exist: {model_path}")
@@ -136,7 +169,9 @@ def evaluate_predictions(y_true: np.ndarray, y_pred: np.ndarray) -> dict[str, fl
     }
 
 
-def save_prediction_results(output_dir: Path, y_true: np.ndarray, y_pred: np.ndarray) -> Path:
+def save_prediction_results(
+    output_dir: Path, y_true: np.ndarray, y_pred: np.ndarray
+) -> Path:
     """Save the prediction table for later inspection."""
     residual = y_true - y_pred
     results_df = pd.DataFrame(
@@ -159,7 +194,13 @@ def plot_fit_curve(y_true: np.ndarray, y_pred: np.ndarray, output_dir: Path) -> 
 
     fig, ax = plt.subplots(figsize=(12, 5))
     ax.plot(y_true_sorted, label="True PM2.5", linewidth=2.2, color="#1f77b4")
-    ax.plot(y_pred_sorted, label="Predicted PM2.5", linewidth=2.0, color="#ff7f0e", alpha=0.9)
+    ax.plot(
+        y_pred_sorted,
+        label="Predicted PM2.5",
+        linewidth=2.0,
+        color="#ff7f0e",
+        alpha=0.9,
+    )
     ax.set_title("Prediction vs True Fit Curve")
     ax.set_xlabel("Samples sorted by true value")
     ax.set_ylabel("PM2.5")
@@ -173,7 +214,9 @@ def plot_fit_curve(y_true: np.ndarray, y_pred: np.ndarray, output_dir: Path) -> 
     return figure_path
 
 
-def plot_residual_distribution(y_true: np.ndarray, y_pred: np.ndarray, output_dir: Path) -> Path:
+def plot_residual_distribution(
+    y_true: np.ndarray, y_pred: np.ndarray, output_dir: Path
+) -> Path:
     """Plot the residual histogram to show the prediction error distribution."""
     residual = y_true - y_pred
 
@@ -218,10 +261,14 @@ def run_regression_pipeline(args: argparse.Namespace) -> dict[str, object]:
     y_train_norm, y_mean, y_std = normalize_target(y_train)
 
     device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
-    config_path = resolve_inference_config(device)
-    predictor = create_predictor(device=device, model_path=args.model_path, config_path=config_path)
+    config_path = resolve_inference_config(device, args.config_path)
+    predictor = create_predictor(
+        device=device, model_path=args.model_path, config_path=config_path
+    )
 
-    y_pred_norm = predictor.predict(x_train, y_train_norm, x_test, task_type="Regression")
+    y_pred_norm = predictor.predict(
+        x_train, y_train_norm, x_test, task_type="Regression"
+    )
     y_pred = to_numpy(y_pred_norm) * y_std + y_mean
 
     metrics = evaluate_predictions(y_test, y_pred)
