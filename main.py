@@ -45,7 +45,7 @@ y_std = y_train.std() + 1e-8
 y_train_norm = (y_train - y_mean) / y_std
 
 # 7) 下载模型权重（repo_id 以你能下载到的为准）
-model_path = "cache/LimiX-2M.ckpt"
+model_path = "modelCache/LimiX-2M.ckpt"
 
 # 8) 选推理配置（用你本地实际存在的那个）
 # cfg_path = f"{ROOT_DIR}/config/reg_default_2M_taar.json"  # 或 reg_default_noretrieval.json
